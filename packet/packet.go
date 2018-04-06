@@ -23,6 +23,7 @@ type GaugeVal struct {
   GVal int
 }
 
+// TODO getters for all of these - make them private
 type Packet struct {
   Name string
   Tags map[string] string
@@ -64,12 +65,12 @@ func sendPacket(pkt *Packet) {
   	   fmt.Println("error:", err)
        return
     }
-    os.Stdout.Write(b)
+  //  os.Stdout.Write(b)
     publisher.Send(string(b[:]), 0)
   }()
 }
 
-
+// TODO error checking
 func Gauge(name string, tags string, gval int) {
   go func() {
     p := newPacket(name, tags)
@@ -80,11 +81,11 @@ func Gauge(name string, tags string, gval int) {
   } ()
 }
 
-func Counter(name string, tags string, increment int) {
+func Counter(name string, tags string, iment int) {
   go func() {
     p := newPacket(name, tags)
     p.Incr = new(CountVal)
-    p.Incr.Increment = increment
+    p.Incr.Increment = iment
 
     sendPacket(p)
   } ()
